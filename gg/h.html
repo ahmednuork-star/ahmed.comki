@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ahmed Technology</title>
+
+  <!-- Font Awesome للأيقونات -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">Ahmed Technology</div>
+  </header>
+
+  <main id="app">
+    <!-- تسجيل الدخول -->
+    <section id="auth" class="card center">
+      <h2>تسجيل الدخول</h2>
+      <div class="row">
+        <label>اختر نوع الحساب</label>
+        <select id="roleSelect">
+          <option value="customer">عميل</option>
+          <option value="employee">موظف</option>
+          <option value="recruiter">مستقدم</option>
+          <option value="manager">مدير</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <input id="emailInput" placeholder="البريد الإلكتروني" />
+        <input id="passwordInput" type="password" placeholder="كلمة المرور"/>
+        <button onclick="emailSignUp()">تسجيل</button>
+        <button onclick="emailSignIn()">دخول</button>
+      </div>
+
+      <div class="row">
+        <input id="codeInput" placeholder="أدخل الشفرة"/>
+        <button onclick="loginWithCode()">دخول بالشفرة</button>
+      </div>
+
+      <div class="row">
+        <button id="googleBtn" onclick="googleSignIn()"><i class="fa fa-google"></i> Google Sign-In</button>
+      </div>
+    </section>
+
+    <!-- لوحة المدير -->
+    <section id="managerPanel" class="hidden">
+      <div class="toolbar">
+        <h2>لوحة المدير</h2>
+        <button onclick="signOut()">خروج</button>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <h3>الإحصائيات</h3>
+          <p>الزوار: <span id="statVisitors">0</span></p>
+          <p>الطلبات: <span id="statOrders">0</span></p>
+          <p>المبيعات: <span id="statSales">0</span></p>
+        </div>
+        <div class="card">
+          <h3>إدارة المنتجات</h3>
+          <input id="prodTitle" placeholder="اسم المنتج" />
+          <input id="prodPrice" type="number" placeholder="السعر" />
+          <input id="prodImage" type="file" accept="image/*" />
+          <button onclick="createProduct()">أضف منتج</button>
+          <div id="managerProducts"></div>
+        </div>
+        <div class="card">
+          <h3>مولد الشفرات</h3>
+          <input id="newEmpCode" placeholder="رمز الموظف" />
+          <button onclick="createEmployeeCode()">إنشاء شفرة</button>
+          <div id="codesList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- لوحة الموظف -->
+    <section id="employeePanel" class="hidden card">
+      <div class="toolbar">
+        <h2>لوحة الموظف</h2>
+        <button onclick="signOut()">خروج</button>
+      </div>
+      <div id="employeeOrders"></div>
+    </section>
+
+    <!-- لوحة المستقدم -->
+    <section id="recruiterPanel" class="hidden card">
+      <div class="toolbar">
+        <h2>لوحة المستقدم</h2>
+        <button onclick="signOut()">خروج</button>
+      </div>
+      <div id="recruiterOrders"></div>
+    </section>
+
+    <!-- المتجر / العميل -->
+    <section id="storePanel" class="hidden card">
+      <div class="toolbar">
+        <h2>المتجر</h2>
+        <button onclick="openCart()">السلة (<span id="cartCount">0</span>)</button>
+        <button onclick="signOut()">خروج</button>
+      </div>
+      <div id="productsList" class="grid"></div>
+      <div class="chat card">
+        <h3>شات Ahmed Technology</h3>
+        <div id="chatBox" class="chatBox"></div>
+        <input id="chatInput" placeholder="اكتب رسالتك..." />
+        <button onclick="sendChat()">أرسل</button>
+      </div>
+    </section>
+
+    <!-- سلة التسوق -->
+    <div id="cartModal" class="modal hidden">
+      <div class="modalContent card">
+        <h3>عربة التسوق</h3>
+        <div id="cartItems"></div>
+        <p>المجموع: <span id="cartTotal">0</span></p>
+        <button onclick="checkout()">إتمام الطلب</button>
+        <button onclick="closeCart()">إغلاق</button>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="firebase-config.example.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
